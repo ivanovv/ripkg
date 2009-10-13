@@ -1,0 +1,5 @@
+#content
+  #text
+    - @packages.each do |pkg|
+      %a{ :href => "/#{pkg.id}" }&= "#{pkg.name}" + (pkg.installed_version ? "  << installed ver #{pkg.installed_version} >>" : "")
+      %br

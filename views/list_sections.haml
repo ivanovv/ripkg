@@ -1,0 +1,5 @@
+#content
+  #text
+    - @sections.each do |section|
+      %a{ :href => "section/#{section.id}" }= section.name.capitalize
+      %br
