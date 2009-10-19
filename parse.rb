@@ -17,18 +17,18 @@ package_parsing_proc = Proc.new do |package|
     package = section.packages.first(:name => parsed_package[:package][:name])
 
     if !package then
-      package = section.packages.create(parsed_package[:package])        
-      package.save    
-    else       
+      package = section.packages.create(parsed_package[:package])
+      package.save
+    else
       package.attributes = parsed_package[:package]
-      package.save if package.dirty?      
+      package.save if package.dirty?
     end
 
   end
 end
 
 list_parser = ListParser.new("C:/Documents and Settings/VIvanov/BitNami RubyStack projects/ripkg/ipkg/lists", "\n\n\n")
-list_parser.parse(&package_parsing_proc)
+list_parser.parse(package_parsing_proc)
 
 
 status_parsing_proc = Proc.new do |package|
@@ -47,4 +47,4 @@ end
 
 
 status_parser = ListParser.new("C:/Documents and Settings/VIvanov/BitNami RubyStack projects/ripkg/ipkg", "\n\n")
-status_parser.parse(&status_parsing_proc)
+status_parser.parse(status_parsing_proc)

@@ -8,7 +8,7 @@ class ListParser
     @record_delimiter = record_delimiter
   end
 
-  def parse(&package_parser)
+  def parse(package_parser)
     @package_parser = package_parser
     Dir[@lists_path + "/*"].each { |list_path| parse_list(list_path) unless File.directory?(list_path) }
   end
