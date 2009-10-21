@@ -3,6 +3,10 @@ require 'model'
 require 'list_parser'
 require 'package_parser'
 
+ipkg_list_path = File.read('ipkg_list_path')
+ipkg_list_path ||='/opt/lib/ipkg'
+
+
 package_parsing_proc = Proc.new do |package|
   parsed_package = PackageParser::parse_package(package)
 
@@ -27,7 +31,7 @@ package_parsing_proc = Proc.new do |package|
   end
 end
 
-list_parser = ListParser.new("C:/Documents and Settings/VIvanov/BitNami RubyStack projects/ripkg/ipkg/lists", "\n\n\n")
+list_parser = ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" )
 list_parser.parse(package_parsing_proc)
 
 
@@ -46,5 +50,5 @@ status_parsing_proc = Proc.new do |package|
 end
 
 
-status_parser = ListParser.new("C:/Documents and Settings/VIvanov/BitNami RubyStack projects/ripkg/ipkg", "\n\n")
+status_parser = ListParser.new(ipkg_list_path, "\n\n")
 status_parser.parse(status_parsing_proc)
