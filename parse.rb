@@ -3,8 +3,13 @@ require 'model'
 require 'list_parser'
 require 'package_parser'
 
-ipkg_list_path = File.read('ipkg_list_path')
-ipkg_list_path ||='/opt/lib/ipkg'
+OPTIONS_FILE = 'ipkg_list_path'
+
+if File.exist?(OPTIONS_FILE)
+  ipkg_list_path = File.read(OPTIONS_FILE)
+else
+  ipkg_list_path ||='/opt/lib/ipkg'
+end
 
 
 package_parsing_proc = Proc.new do |package|
@@ -12,6 +17,7 @@ package_parsing_proc = Proc.new do |package|
 
   if parsed_package[:package][:name].to_s != ""
 
+    puts parsed_package[:package][:name]
     section = Section.first(parsed_package[:section])
     if section == nil then
       section = Section.new(parsed_package[:section])
@@ -40,6 +46,7 @@ status_parsing_proc = Proc.new do |package|
 
   if parsed_package[:package][:name].to_s != ""
 
+    puts parsed_package[:package][:name]
     package = Package.first(:name => parsed_package[:package][:name])
     if package then
       package.installed_version = parsed_package[:package][:version]
