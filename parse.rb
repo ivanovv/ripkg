@@ -16,8 +16,7 @@ package_parsing_proc = Proc.new do |package|
   parsed_package = PackageParser::parse_package(package)
 
   if parsed_package[:package][:name].to_s != ""
-
-    puts parsed_package[:package][:name]
+    
     section = Section.first(parsed_package[:section])
     if section == nil then
       section = Section.new(parsed_package[:section])
@@ -45,8 +44,7 @@ status_parsing_proc = Proc.new do |package|
   parsed_package = PackageParser::parse_package(package)
 
   if parsed_package[:package][:name].to_s != ""
-
-    puts parsed_package[:package][:name]
+    
     package = Package.first(:name => parsed_package[:package][:name])
     if package then
       package.installed_version = parsed_package[:package][:version]
