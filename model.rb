@@ -2,6 +2,7 @@ require 'rubygems'
 require 'dm-core'
 require 'dm-validations'
 require 'dm-timestamps'
+require 'dm-aggregates'
 
 DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.sqlite3")
 
@@ -43,3 +44,4 @@ class Section
 end
 
 DataMapper.auto_upgrade!
+DataMapper.logger.set_log('log/dm.log', :debug," ~ ", true)
