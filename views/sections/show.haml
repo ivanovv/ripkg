@@ -1,0 +1,7 @@
+#content
+  #text    
+    %h1&= @section.name + "(#{@section.packages.all.size} packages)"
+    %br    
+    - @section.packages.each do |package|
+      %a{ :href => "/sections/#{@section.id}/packages/#{package.id}" }&= package.name.capitalize
+      %br
