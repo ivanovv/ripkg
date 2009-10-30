@@ -9,6 +9,11 @@ class MountedApp < Sinatra::Base
   get '/' do
     "You created a post, and this is a custom response."
   end
+
+  get '/updated' do
+    @packages = Package.all(:conditions =>["\"installed_version\" > \"\" and \"installed_version\" <> \"version\""])
+    haml "packages/index".to_sym
+  end
   
   mount(Section) do
     mounted_template_engine :haml

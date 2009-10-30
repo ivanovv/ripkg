@@ -1,5 +1,5 @@
 #content
   #text
     - @packages.each do |package|
-      %a{ :href => "/sections/#{@section.id}/packages/#{package.id}" }&= package.name.capitalize
+      %a{ :href => "/sections/#{package.section.id}/packages/#{package.id}" }&= package.name.capitalize
       %br

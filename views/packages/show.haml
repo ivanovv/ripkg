@@ -5,6 +5,8 @@
       Section
       &=@package.section.name
       %br
+      &="Version in feed #{@package.version}"
+      %br
       &=@package.installed_version ? "Installed version #{@package.installed_version}" : "Not installed"
 
   #desc
