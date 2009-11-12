@@ -1,5 +1,4 @@
-.temp
-  %h3= @package.name
+.temp{:title => @package.name}  
   %p
     Section
     &=@package.section.name
@@ -9,15 +8,12 @@
     &=@package.installed_version ? "Installed version #{@package.installed_version}" : "Not installed"
 
   %p= @package.description
-  %br
   %p
     Filesize:
     &= @package.size
     bytes
-  %br
   %p
     Source:
     %a{ :href => @package.source }= @package.source
-  %br
   %p&= @package.depends ?  "Depends: #{@package.depends}" : ""
 
