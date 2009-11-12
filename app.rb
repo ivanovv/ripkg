@@ -6,12 +6,17 @@ class MountedApp < Sinatra::Base
   set :static, true
 
   
-  get '/' do
-    "You created a post, and this is a custom response."
+  #get '/' do
+  #  "You created a post, and this is a custom response."
+  #end
+
+  get '/index' do
+    haml :index
   end
 
+
   get '/updated' do
-    @packages = Package.all(:conditions =>["\"installed_version\" > \"\" and \"installed_version\" <> \"version\""])
+    @packages = Package.all(:conditions =>['"installed_version" > "" and "installed_version" <> "version"'])
     haml "packages/index".to_sym
   end
   

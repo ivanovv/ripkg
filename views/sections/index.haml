@@ -1,7 +1,4 @@
-#content
-  #text
-    %h3&= "Total sections: #{Section.count}"
-    %br
-    - @sections.each do |section|      
+%ul{:id => "sections", :title => "Sections", :selected => "true"}
+  - @sections.each do |section|      
+    %li
       %a{ :href => "/sections/#{section.id}" }&= section.name.capitalize + " (#{Package.count(:section_id => section.id)})"
-      %br

@@ -1,25 +1,23 @@
-#content
-  #title
-    %h2= @package.name
-    %h3
-      Section
-      &=@package.section.name
-      %br
-      &="Version in feed #{@package.version}"
-      %br
-      &=@package.installed_version ? "Installed version #{@package.installed_version}" : "Not installed"
+%h3= @package.name
+%h3
+  Section
+  &=@package.section.name
+  %br
+  &="Version in feed #{@package.version}"
+  %br
+  &=@package.installed_version ? "Installed version #{@package.installed_version}" : "Not installed"
 
-  #desc
-    %p= @package.description
-    %br
-    %p
-      Filesize:
-      &= @package.size
-      bytes
-    %br
-    %p
-      Source:
-      %a{ :href => @package.source }= @package.source
-    %br
-    %p&= @package.depends ?  "Depends: #{@package.depends}" : ""
+#desc
+  %p= @package.description
+  %br
+  %p
+    Filesize:
+    &= @package.size
+    bytes
+  %br
+  %p
+    Source:
+    %a{ :href => @package.source }= @package.source
+  %br
+  %p&= @package.depends ?  "Depends: #{@package.depends}" : ""
 

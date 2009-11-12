@@ -1,8 +1,9 @@
 !!!
 %html{html_attrs('ru-ru')}
   %head
-    %title Ruby IPKG
+    %title  RubyIPKG
     %meta{ :"http-equiv" => "content-type", :content => "text/html;charset=UTF-8" }
+    %link{ :rel => 'stylesheet', :href => '/style.css', :type => 'text/css'}
     %meta{ :name => "viewport", :content => "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" }
     %style{ :type => "text/css", :media => "screen"} @import "/iui/iui.css";
     %script{ :type => "application/x-javascript", :src => "/iui/iui.js"}
@@ -10,14 +11,5 @@
   %body
     .toolbar
       %h1{ :id => "pageTitle"}
-      %a{ :id => "backButton", :class => "button", :href => "#"}
-    %ul{ :id => "home", :title => "RubyIPKG", :selected => "true"}
-      %li
-        %a{ :href => "/sections" } Sections
-      %li
-        %a{ :href => "/packages" } Packages
-      %li
-        %a{ :href => "/updated" } Updated Packages
-      %li
-        %a{ :href => "http://code.google.com/p/iui/", :target => "_self"} About
-      %li Nothing
+      %a{ :id => "backButton", :class => "button", :href => "#"}    
+    = yield
