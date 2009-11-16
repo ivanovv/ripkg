@@ -11,6 +11,7 @@
     .toolbar
       %h1{ :id => "pageTitle"}
       %a{ :id => "backButton", :class => "button", :href => "#"}
+      %a{ :class => "button", :href => "#searchForm"} Search
     %ul{ :id => "home", :title => "RubyIPKG", :selected => "true"}
       %li
         %a{ :href => "/sections" } Sections
@@ -21,3 +22,12 @@
       %li
         %a{ :href => "http://code.google.com/p/iui/", :target => "_self"} About
       %li Nothing
+    %form{ :id => "searchForm", :class => "dialog", :action => "search", :method => "POST" }
+      %fieldset
+        %h1 Package Search
+        %a{ :class => "button leftButton", :type => "cancel"} Cancel
+        %a{ :class => "button blueButton", :type => "submit"} Search
+            
+        %label Package:
+        %input{ :id => "package_name", :type => "text", :name => "package_name", :style => "padding: 6px 6px 6px 64px;"}
+    

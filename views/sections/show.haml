@@ -1,4 +1,4 @@
-%ul{:id => "packages", :title => "#{@section.name.capitalize} Packages", :selected => "true"}
+%ul{:id => "#{@section.name}_packages", :title => "#{@section.name.capitalize} Packages", :selected => "true"}
   - @section.packages.each do |package|
     %li
       %a{ :href => "/sections/#{@section.id}/packages/#{package.id}" }&= package.name.capitalize
