@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/lib/common.rb'
-require 'pp'
 
 class MountedApp < Sinatra::Base
   set :app_file, __FILE__
   set :logging, true
   set :static, true
+  set :haml, {:format => :html5 }
 
-  
+
   get '/' do
     "You created a post, and this is a custom response."
   end
@@ -17,6 +17,7 @@ class MountedApp < Sinatra::Base
 
   post "/search" do
     @packages = Package.all(:name.like => "%#{params[:package_name]}%")
+    #@packages = Package.all(:conditions =>["name like ?", "%#{params[:package_name]}%"])
     haml "packages/index".to_sym
   end
 

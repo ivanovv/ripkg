@@ -10,8 +10,7 @@
   %p= @package.description
   %p
     Filesize:
-    &= @package.size
-    bytes
+    &= @package.size.to_filesize
   %p
     Source:
     %a{ :href => @package.source }= @package.source
