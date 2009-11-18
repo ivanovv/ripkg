@@ -11,14 +11,17 @@ else
   ipkg_list_path ||='/opt/lib/ipkg'
 end
 
+puts "Parsing started"
 
-package_parsing_proc = Proc.new do |package|
+list_parser = ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" )
+
+list_parser.parse do |package|
   parsed_package = PackageParser::parse_package(package)
 
   if parsed_package[:package][:name].to_s != ""
     
     section = Section.first(parsed_package[:section])
-    if section == nil then
+    if !section then
       section = Section.new(parsed_package[:section])
       section.save
     end
@@ -34,17 +37,15 @@ package_parsing_proc = Proc.new do |package|
     end
 
   end
+
 end
 
-list_parser = ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" )
-list_parser.parse(package_parsing_proc)
 
 
-status_parsing_proc = Proc.new do |package|
+status_parser = ListParser.new(ipkg_list_path, "\n\n")
+status_parser.parse do |package|
   parsed_package = PackageParser::parse_package(package)
-
-  if parsed_package[:package][:name].to_s != ""
-    
+  if parsed_package[:package][:name].to_s != ""    
     package = Package.first(:name => parsed_package[:package][:name])
     if package then
       package.installed_version = parsed_package[:package][:version]
@@ -54,6 +55,4 @@ status_parsing_proc = Proc.new do |package|
   end
 end
 
-
-status_parser = ListParser.new(ipkg_list_path, "\n\n")
-status_parser.parse(status_parsing_proc)
+puts "Parsing finished"

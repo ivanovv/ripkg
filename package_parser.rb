@@ -20,21 +20,17 @@ class PackageParser
     @parsed_package = { :package => {}, :section => {} }
     
     lines.each do |line|
-      parse_single_string line
+      @regex.each do |symbol, regex|
+        if line =~ /#{regex}: (.*)$/
+          if symbol != :section
+            @parsed_package[:package][symbol] = $1
+          else
+            @parsed_package[:section] = {:name => $1}
+          end
+        end
+      end      
     end
     @parsed_package
-  end  
-
-  def self.parse_single_string (line)
-    @regex.each do |symbol, regex|
-      if line =~ /#{regex}: (.*)$/
-        if symbol != :section
-          @parsed_package[:package][symbol] = $1
-        else
-          @parsed_package[:section] = {:name => $1}
-        end
-      end
-    end
   end
 
 end
