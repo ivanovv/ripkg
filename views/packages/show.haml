@@ -8,11 +8,9 @@
       %label Version in feed
       -# %input{:type => "text", :name => "version", :value => @package.version, :style => "padding-left: 150px;"}
       %span{:style => "padding-left: 150px;"}&= @package.version
-    -#.row
     .row
       %label Installed version
       %span{:style => "padding-left: 150px;"}&= @package.installed_version ? "#{@package.installed_version}" : "Not installed"
-      -#
     .row
       %label Filesize
       %span{:style => "padding-left: 150px;"}&= @package.size.to_filesize
