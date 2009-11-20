@@ -5,7 +5,7 @@ require 'rubygems'
 require 'sinatra'
 require 'lib/sinatras-hat'
 require 'haml'
-require 'pp'
+require 'ipkg'
 
 # Models
 require 'model'

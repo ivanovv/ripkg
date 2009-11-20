@@ -17,8 +17,21 @@ class MountedApp < Sinatra::Base
 
   post "/search" do
     @packages = Package.all(:name.like => "%#{params[:package_name]}%")
-    #@packages = Package.all(:conditions =>["name like ?", "%#{params[:package_name]}%"])
     haml "packages/index".to_sym
+  end
+
+  post "/system/:action/:package_id" do
+    if params[:action] = "update" then 
+      @ipkg_text = Ipkg.update
+    else
+      pkg = Package.get(param[:package_id].to_i)
+      if pkg then
+        pkg_name = Package.get(param[:package_id].to_i).name 
+      else
+      end
+      @ipkg_text = Ipkg.send(params[:action].to_sym, pkg_name)
+    end
+    haml :ipkg
   end
 
 

@@ -1,4 +1,4 @@
-%form.panel{:id => @package.name, :title => @package.name}
+%form.panel{:id => @package.name, :title => @package.name, :action => "/system", :method => "POST"}
   %h2 Properties
   %fieldset
     .row
@@ -6,7 +6,6 @@
       %span{:style => "padding-left: 150px;"}&= @package.section.name
     .row
       %label Version in feed
-      -# %input{:type => "text", :name => "version", :value => @package.version, :style => "padding-left: 150px;"}
       %span{:style => "padding-left: 150px;"}&= @package.version
     .row
       %label Installed version
@@ -28,15 +27,14 @@
   %h2 Description
   %fieldset
     .row{ :style => "text-align: justify; padding: 12px 10px 12px 10px; vertical-align: text-bottom;"}
-      -# %br
       &=@package.description
 
   - if !@package.installed_version
-    %a.whiteButton{ :type=>'submit', :href=>'#' } Install
+    %a.whiteButton{ :type => 'submit', :href => '#' } Install
 
   - if @package.installed_version
     %br
     - if @package.installed_version != @package.version
-      %a.whiteButton{ :type=>'submit', :href=>'#' } Update
+      %a.whiteButton{ :type => 'submit', :href => '#' } Update
       %br
-    %a.grayButton{ :type=>'submit', :href=>'#' } Remove
+    %a.grayButton{ :type => 'submit', :href => '#' } Remove
