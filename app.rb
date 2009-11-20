@@ -26,6 +26,11 @@ class MountedApp < Sinatra::Base
     @packages = Package.all(:conditions =>['"installed_version" > "" and "installed_version" <> "version"'])
     haml "packages/index".to_sym
   end
+
+  get '/installed' do
+    @packages = Package.all(:conditions =>['"installed_version" > ""'])
+    haml "packages/index".to_sym
+  end
   
   mount(Section) do
     mounted_template_engine :haml

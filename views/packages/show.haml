@@ -1,18 +1,44 @@
-.panel{:id => @package.name, :title => @package.name}  
-  %p
-    Section
-    &=@package.section.name
-    %br
-    &="Version in feed #{@package.version}"
-    %br
-    &=@package.installed_version ? "Installed version #{@package.installed_version}" : "Not installed"
+%form.panel{:id => @package.name, :title => @package.name}
+  %h2 Properties
+  %fieldset
+    .row
+      %label Section
+      %span{:style => "padding-left: 150px;"}&= @package.section.name
+    .row
+      %label Version in feed
+      -# %input{:type => "text", :name => "version", :value => @package.version, :style => "padding-left: 150px;"}
+      %span{:style => "padding-left: 150px;"}&= @package.version
+    -#.row
+    .row
+      %label Installed version
+      %span{:style => "padding-left: 150px;"}&= @package.installed_version ? "#{@package.installed_version}" : "Not installed"
+      -#
+    .row
+      %label Filesize
+      %span{:style => "padding-left: 150px;"}&= @package.size.to_filesize
+    .row
+      %label Source
+      %a{ :href => @package.source, :style => "padding-left: 150px; position: absolute; padding: 12px 10px 0 110px; margin: 0;" }= @package.source
 
-  %p= @package.description
-  %p
-    Filesize:
-    &= @package.size.to_filesize
-  %p
-    Source:
-    %a{ :href => @package.source }= @package.source
-  %p&= @package.depends ?  "Depends: #{@package.depends}" : ""
+  - if @package.depends
+    %h2 Depends
+    %fieldset
+      - @package.depends.split(",").each do |dep_package|
+        .row
+          %span{:style => "padding-left: 10px;"}&= dep_package
 
+  %h2 Description
+  %fieldset
+    .row{ :style => "text-align: justify; padding: 12px 10px 12px 10px; vertical-align: text-bottom;"}
+      -# %br
+      &=@package.description
+
+  - if !@package.installed_version
+    %a.whiteButton{ :type=>'submit', :href=>'#' } Install
+
+  - if @package.installed_version
+    %br
+    - if @package.installed_version != @package.version
+      %a.whiteButton{ :type=>'submit', :href=>'#' } Update
+      %br
+    %a.grayButton{ :type=>'submit', :href=>'#' } Remove
