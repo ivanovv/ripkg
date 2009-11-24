@@ -20,16 +20,16 @@ class MountedApp < Sinatra::Base
     haml "packages/index".to_sym
   end
 
-  post "/system/:action/:package_id" do
-    if params[:action] = "update" then 
+  post "/system/:package_id" do
+    if params[:action].to_s.downcase == "update" then 
       @ipkg_text = Ipkg.update
     else
-      pkg = Package.get(param[:package_id].to_i)
+      pkg = Package.get(params[:package_id].to_i)
       if pkg then
-        pkg_name = Package.get(param[:package_id].to_i).name 
+        @ipkg_text = Ipkg.send(params[:action].to_s.downcase.to_sym, pkg.name)        
       else
-      end
-      @ipkg_text = Ipkg.send(params[:action].to_sym, pkg_name)
+        @ipkg_text = "No package found!"
+      end      
     end
     haml :ipkg
   end

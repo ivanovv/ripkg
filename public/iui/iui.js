@@ -335,7 +335,7 @@ addEventListener("click", function(event)
 
 addEventListener("click", function(event)
 {
-    var input = findParent(event.target, "a");
+    var input = findParent(event.target, "input");
     if (input && input.type == "submit")
     {
         submitElementValue = input.name + "=" + escape(input.value);
