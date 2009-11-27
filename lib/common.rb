@@ -3,7 +3,8 @@ $LOAD_PATH << File.join(File.dirname(__FILE__))
 
 require 'rubygems'
 require 'sinatra'
-require 'lib/sinatras-hat'
+begin; require 'sinatras-hat'; rescue LoadError; end
+require 'lib/sinatras-hat/lib/sinatras-hat.rb' unless defined? Sinatra::Hat::Model
 require 'haml'
 require 'ipkg'
 
