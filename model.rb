@@ -4,7 +4,7 @@ require 'dm-validations'
 require 'dm-timestamps'
 require 'dm-aggregates'
 
-DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.sqlite3")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/test.sqlite3")
 
 class Package
   include DataMapper::Resource
