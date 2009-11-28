@@ -7,8 +7,10 @@ class MountedApp < Sinatra::Base
   set :haml, {:format => :html5 }
 
 
-  get '/','/index'  do
-    haml :index
+  ['/', '/index'].each do |path|
+    get path do
+      haml :index
+    end
   end
 
   post "/search" do
