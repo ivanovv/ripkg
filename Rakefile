@@ -30,10 +30,10 @@ task :load_data do
 
   ftp.nlst.each do |ftp_file|
     local_file = File.join(local_dir, ftp_file)
-    File.delete (local_file) if File.exists?(local_file)
+    File.delete(local_file) if File.exists?(local_file)
     ftp.gettextfile(ftp_file, local_file)
   end
-  puts "data downloaded successfully"
+  puts "Data downloaded successfully"
 end
 
 desc "parse data from router"
