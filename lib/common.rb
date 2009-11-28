@@ -27,3 +27,36 @@ class Fixnum
   end
 end
 
+module Sinatra
+  module Hat
+    class Maker
+      option_setter :mounted_template_engine
+      def options
+        @options ||= {
+          :only => Set.new(Maker.actions.keys),
+          :parent => nil,
+          :format => nil,
+          :prefix => model.plural,
+          :finder => proc { |model, params| model.all },
+          :record => proc { |model, params| model.send("find_by_#{to_param}", params[:id]) },
+          :protect => [ ],
+          :formats => { },
+          :mounted_template_engine => :erb,
+          :to_param => :id,
+          :credentials => { :username => 'username', :password => 'password', :realm => "The App" },
+          :authenticator => proc { |username, password| [username, password] == [:username, :password].map(&credentials.method(:[])) }
+        }
+      end
+    end
+
+    class Response
+      def render(action, render_options={})      
+          render_options.each { |sym, value| @request.send(sym, value) }
+          @request.send(options[:mounted_template_engine], "#{maker.prefix}/#{action}".to_sym)          
+        rescue Errno::ENOENT
+          no_template! "Can't find #{File.expand_path(File.join(views, action.to_s))}.#{options[:mounted_template_engine].to_s}"
+      end
+    end
+  end
+end
+    
