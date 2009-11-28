@@ -60,6 +60,7 @@ class MountedApp < Sinatra::Base
 
   parser = Thread.new do
     RouterDownload.do_the_job
+    IpkgListParser.do_the_job
     Thread.exit
   end
   parser.join

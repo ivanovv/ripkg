@@ -2,17 +2,21 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__))
 
 require 'rubygems'
+# Gems
 require 'sinatra'
-#begin; require 'sinatras-hat'; rescue LoadError; end
-require 'sinatras-hat'
-#require 'lib/sinatras-hat/lib/sinatras-hat.rb' unless defined? Sinatra::Hat::Model
+begin; require 'sinatras-hat'; rescue LoadError; end
+require 'lib/sinatras-hat/lib/sinatras-hat.rb' unless defined? Sinatra::Hat::Model
 require 'haml'
+
+# Utils
 require 'ipkg'
 require 'ftp'
+require 'ipkg_parser'
 
 # Models
 require 'model'
-#=begin
+
+
 module Sinatra
   module Hat
     class Maker
@@ -31,7 +35,7 @@ module Sinatra
           :record => proc { |model, params| model.send("find_by_#{to_param}", params[:id]) },
           :protect => [ ],
           :formats => { },
-          :mounted_template_engine => :erb,
+          :mounted_template_engine => :haml,
           :to_param => :id,
           :credentials => { :username => 'username', :password => 'password', :realm => "The App" },
           :authenticator => proc { |username, password| [username, password] == [:username, :password].map(&credentials.method(:[])) }
@@ -40,6 +44,7 @@ module Sinatra
     end
 
     class Response
+      delegate :options, :to => :maker
       def render(action, render_options={})      
           render_options.each { |sym, value| @request.send(sym, value) }
           @request.send(options[:mounted_template_engine], "#{maker.prefix}/#{action}".to_sym)          
@@ -49,7 +54,7 @@ module Sinatra
     end
   end
 end
-#=end
+
 
 def plural(count, singular, plural)
     count == 1 ? singular : plural
