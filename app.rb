@@ -34,7 +34,7 @@ class MountedApp < Sinatra::Base
 
 
   get '/updated' do
-    @packages = Package.all(:conditions =>['"installed_version" > "" and "installed_version" <> "version"'])
+    @packages = Package.all(:conditions =>['"installed_version" > \'\' and "installed_version" <> "version"'])
     haml "packages/index".to_sym
   end
 
