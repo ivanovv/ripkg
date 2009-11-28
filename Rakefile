@@ -17,6 +17,7 @@ task :default => [:load_data, :parse_data]
 
 desc "load data from router"
 task :load_data do
+  puts "Start data download"
   ftp = Net::FTP.new(ROUTER_NAME)
   ftp.passive = true
   ftp.login
@@ -31,7 +32,8 @@ task :load_data do
     local_file = File.join(local_dir, ftp_file)
     File.delete (local_file) if File.exists?(local_file)
     ftp.gettextfile(ftp_file, local_file)
-  end    
+  end
+  puts "data downloaded successfully"
 end
 
 desc "parse data from router"

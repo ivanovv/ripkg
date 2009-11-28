@@ -10,8 +10,6 @@ require 'haml'
 
 # Utils
 require 'ipkg'
-require 'ftp'
-require 'ipkg_parser'
 
 # Models
 require 'model'

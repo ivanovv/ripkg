@@ -2,7 +2,7 @@ class Ipkg
 
   def self.try_external_command(param)
     begin
-      yield (param)
+      yield(param)
     rescue Exception
       $!.inspect
     end
