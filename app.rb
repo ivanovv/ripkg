@@ -59,4 +59,4 @@ class MountedApp < Sinatra::Base
   end
 end
 
-MountedApp.run! if __FILE__ == $0
+#MountedApp.run! if __FILE__ == $0
