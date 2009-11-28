@@ -57,6 +57,12 @@ class MountedApp < Sinatra::Base
       record { |model, params| model.first(:id => params[:id].to_i) }
     end
   end
+
+  parser = Thread.new do
+    RouterDownload.do_the_job
+    Thread.exit
+  end
+  parser.join
 end
 
 #MountedApp.run! if __FILE__ == $0
