@@ -11,12 +11,15 @@ require 'ipkg'
 
 # Models
 require 'model'
-
+#=begin
 module Sinatra
   module Hat
     class Maker
-      raise self.methods.join("<br>")
-      option_setter :mounted_template_engine
+      def mounted_template_engine(args)
+            return options["mounted_template_engine"] = args unless args.empty?
+            return options["mounted_template_engine"]
+      end
+
       def options
         @options ||= {
           :only => Set.new(Maker.actions.keys),
@@ -45,7 +48,7 @@ module Sinatra
     end
   end
 end
-
+#=end
 
 def plural(count, singular, plural)
     count == 1 ? singular : plural
