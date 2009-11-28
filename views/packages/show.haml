@@ -15,7 +15,7 @@
       %span{:style => "padding-left: 150px;"}&= @package.size.to_filesize
     .row
       %label Source
-      %a{ :href => @package.source, :style => "padding-left: 150px; position: absolute; padding: 12px 10px 0 110px; margin: 0;" }= @package.source
+      %a{ :href => @package.source, :style => "padding-left: 150px; position: absolute; padding: 12px 10px 0 110px; margin: 0;" } Link!
 
   - if @package.depends
     %h2 Depends
@@ -30,11 +30,13 @@
       &=@package.description
 
   - if !@package.installed_version
-    %input.whiteButton{ :type => 'submit', :name =>"action", :href => '#', :value => "install" }
+    %input.whiteButton{ :type => 'submit', :name =>"action", :href => '#', :value => "Install" }
 
   - if @package.installed_version
     %br
     - if @package.installed_version != @package.version
-      %input.whiteButton{ :type => 'submit', :name =>"action", :href => '#', :value => "upgrade" }
+      %input.whiteButton{ :type => 'submit', :name =>"action", :href => '#', :value => "Upgrade" }
       %br
-    %input.grayButton{ :type => 'submit', :name =>"action", :href => '#', :value => "remove" }
+    %input.grayButton{ :type => 'submit', :name =>"action", :href => '#', :value => "Remove" }
+%br
+ 

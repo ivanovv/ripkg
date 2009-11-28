@@ -7,11 +7,7 @@ class MountedApp < Sinatra::Base
   set :haml, {:format => :html5 }
 
 
-  get '/' do
-    "You created a post, and this is a custom response."
-  end
-
-  get '/index' do
+  get '/','/index'  do
     haml :index
   end
 
@@ -41,7 +37,8 @@ class MountedApp < Sinatra::Base
   end
 
   get '/installed' do
-    @packages = Package.all(:conditions =>['"installed_version" > ""'])
+    @packages = Package.all(:installed_version.gt => "")
+    #@packages = Package.all(:conditions =>['"installed_version" > ""'])
     haml "packages/index".to_sym
   end
   
