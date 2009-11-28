@@ -15,7 +15,7 @@ require 'model'
 module Sinatra
   module Hat
     class Maker
-      def mounted_template_engine(args)
+      def mounted_template_engine(*args)
             return options["mounted_template_engine"] = args unless args.empty?
             return options["mounted_template_engine"]
       end
