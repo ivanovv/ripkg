@@ -8,6 +8,7 @@ require 'sinatras-hat'
 #require 'lib/sinatras-hat/lib/sinatras-hat.rb' unless defined? Sinatra::Hat::Model
 require 'haml'
 require 'ipkg'
+require 'ftp'
 
 # Models
 require 'model'
