@@ -30,6 +30,7 @@ end
 module Sinatra
   module Hat
     class Maker
+      raise self.methods.join("___")
       option_setter :mounted_template_engine
       def options
         @options ||= {
