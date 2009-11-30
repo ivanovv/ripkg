@@ -43,9 +43,9 @@ module Sinatra
 
     class Response
       delegate :options, :to => :maker
-      def render(action, render_options={})      
+      def render(action, render_options={})
           render_options.each { |sym, value| @request.send(sym, value) }
-          @request.send(options[:mounted_template_engine], "#{maker.prefix}/#{action}".to_sym)          
+          @request.send(options[:mounted_template_engine], "#{maker.prefix}/#{action}".to_sym)
         rescue Errno::ENOENT
           no_template! "Can't find #{File.expand_path(File.join(views, action.to_s))}.#{options[:mounted_template_engine].to_s}"
       end

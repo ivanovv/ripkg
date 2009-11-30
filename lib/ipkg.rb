@@ -11,7 +11,7 @@ class Ipkg
   def self.remove(pkg_name)
     try_external_command(pkg_name) do
       `ipkg -force-defaults remove #{pkg_name} </dev/null`
-    end    
+    end
   end
 
   def self.install(pkg_name)

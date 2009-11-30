@@ -76,7 +76,7 @@ task :parse_data do
   status_parser = ListParser.new(ipkg_list_path, "\n\n")
   status_parser.parse do |package|
     parsed_package = PackageParser::parse_package(package)
-    if parsed_package[:package][:name].to_s != ""    
+    if parsed_package[:package][:name].to_s != ""
       package = Package.first(:name => parsed_package[:package][:name])
       if package then
         package.installed_version = parsed_package[:package][:version]
