@@ -1,6 +1,5 @@
 *.sqlite3
 vendor/*
 .idea/*
-ipkg_list_path
 log/*
 *~
