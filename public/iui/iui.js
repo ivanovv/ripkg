@@ -21,7 +21,7 @@ var checkTimer;
 var hasOrientationEvent = false;
 var portraitVal = "portrait";
 var landscapeVal = "landscape";
-var submitElementValue = null;
+var submitElementValue = [];
 
 // *************************************************************************************************
 
@@ -338,7 +338,8 @@ addEventListener("click", function(event)
     var input = findParent(event.target, "input");
     if (input && input.type == "submit")
     {
-        submitElementValue = input.name + "=" + escape(input.value);
+        submitElementValue[0] = input.name;
+        submitElementValue[1] = escape(input.value);
     }
 }, true);
 
@@ -600,7 +601,7 @@ function encodeForm(form)
            if ((inputs[i].getAttribute("type") == "checkbox" && !inputs[i].checked) || (inputs[i].getAttribute("type") == "submit")) {
               continue;
             } else {
-              args.push(inputs[i].name + "=" + escape(inputs[i].value));
+              args[inputs[i].name] = inputs[i].value;
             }
         }
     }
@@ -612,7 +613,7 @@ function encodeForm(form)
     encode(form.getElementsByTagName("select"));
     encode(form.getElementsByTagName("button"));
     if (submitElementValue) {
-      args.push(submitElementValue);
+      args[submitElementValue[0]] = submitElementValue[1];
     }
     return args;
 }
