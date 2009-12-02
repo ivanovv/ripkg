@@ -1,4 +1,4 @@
-%ul{:id => "sections", :title => "Sections", :selected => "true"}
+%ul#sections{ :title => "Sections", :selected => "true"}
   - @sections.each do |section|
     %li
       %a{ :href => "/sections/#{section.id}" }&= section.name.capitalize + " (#{Package.count(:section_id => section.id)})"
