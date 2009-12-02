@@ -17,9 +17,25 @@ require 'model'
 
 module Sinatra
   module Hat
-    if !Maker.instance_methods.include?("mounted_template_engine") then
+    if !Maker.new(Maker).options.include?(:mounted_template_engine) then
      puts "need to monkey patch sinatras hat"
-     Maker.option_setter(:mounted_template_engine)
+
+     class Maker
+       def options
+          @options ||= {
+            :only => Set.new(Maker.actions.keys),
+            :parent => nil,
+            :finder => proc { |model, params| model.all },
+            :record => proc { |model, params| model.send("find_by_#{to_param}", params[:id]) },
+            :protect => [ ],
+            :formats => { },
+            :mounted_template_engine => :haml,
+            :to_param => :id,
+            :credentials => { :username => 'username', :password => 'password', :realm => "The App" },
+            :authenticator => proc { |username, password| [username, password] == [:username, :password].map(&credentials.method(:[])) }
+          }
+        end
+      end
 
       class Response
         delegate :options, :to => :maker
