@@ -5,7 +5,7 @@ require 'rubygems'
 # Gems
 require 'sinatra'
 begin; require 'sinatras-hat'; rescue LoadError; end
-require 'lib/sinatras-hat/lib/sinatras-hat.rb' unless defined? Sinatra::Hat::Model
+require 'lib/sinatras-hat/lib/sinatras-hat.rb' unless defined? Sinatra::Hat
 require 'haml'
 
 # Utils
@@ -17,31 +17,9 @@ require 'model'
 
 module Sinatra
   module Hat
-    if !defined? Sinatra::Hat::Model then
+    if !Maker.instance_methods.include?("mounted_template_engine") then
      puts "need to monkey patch sinatras hat"
-      class Maker
-        def mounted_template_engine(*args)
-              return options["mounted_template_engine"] = args unless args.empty?
-              return options["mounted_template_engine"]
-        end
-
-        def options
-          @options ||= {
-            :only => Set.new(Maker.actions.keys),
-            :parent => nil,
-            :format => nil,
-            :prefix => model.plural,
-            :finder => proc { |model, params| model.all },
-            :record => proc { |model, params| model.send("find_by_#{to_param}", params[:id]) },
-            :protect => [ ],
-            :formats => { },
-            :mounted_template_engine => :haml,
-            :to_param => :id,
-            :credentials => { :username => 'username', :password => 'password', :realm => "The App" },
-            :authenticator => proc { |username, password| [username, password] == [:username, :password].map(&credentials.method(:[])) }
-          }
-        end
-      end
+     Maker.option_setter(:mounted_template_engine)
 
       class Response
         delegate :options, :to => :maker
