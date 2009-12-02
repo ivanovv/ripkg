@@ -42,13 +42,12 @@ task :parse_data do
   if File.exist?(OPTIONS_FILE)
     ipkg_list_path = File.read(OPTIONS_FILE).chomp
   else
-    ipkg_list_path ||='/opt/lib/ipkg'
+    ipkg_list_path || = '/opt/lib/ipkg'
   end
 
   puts "Parsing started"
 
-  list_parser = ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" )
-  list_parser.parse do |package|
+  ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" ).parse do |package|
     parsed_package = PackageParser::parse_package(package)
 
     if parsed_package[:package][:name].to_s != ""
@@ -73,8 +72,7 @@ task :parse_data do
 
 
 
-  status_parser = ListParser.new(ipkg_list_path, "\n\n")
-  status_parser.parse do |package|
+  ListParser.new(ipkg_list_path, "\n\n").parse do |package|
     parsed_package = PackageParser::parse_package(package)
     if parsed_package[:package][:name].to_s != ""
       package = Package.first(:name => parsed_package[:package][:name])

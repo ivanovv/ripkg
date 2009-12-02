@@ -1,3 +1,5 @@
-require 'app'
+require File.join(File.dirname(__FILE__), 'app.rb')
+
+disable :run
+
 run MountedApp
-#run Sinatra::Application

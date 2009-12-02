@@ -44,4 +44,4 @@ class Section
 end
 
 DataMapper.auto_upgrade!
-DataMapper.logger.set_log('log/dm.log', :debug," ~ ", true)
+DataMapper.logger.set_log('log/dm.log', :debug," ~ ", true) if (ENV['RACK_ENV'] || :development).to_sym != :production

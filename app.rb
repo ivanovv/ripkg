@@ -1,10 +1,11 @@
 require File.dirname(__FILE__) + '/lib/common.rb'
 
 class MountedApp < Sinatra::Base
-  set :app_file, __FILE__
-  set :logging, true
-  set :static, true
-  set :haml, {:format => :html5 }
+
+  set   :app_file,  __FILE__
+  set   :logging,   development?
+  set   :static,    true
+  set   :haml,      {:format => :html5}
 
 
   ['/', '/index'].each do |path|
@@ -40,7 +41,6 @@ class MountedApp < Sinatra::Base
 
   get '/installed' do
     @packages = Package.all(:installed_version.gt => "")
-    #@packages = Package.all(:conditions =>['"installed_version" > ""'])
     haml "packages/index".to_sym
   end
   
@@ -57,4 +57,3 @@ class MountedApp < Sinatra::Base
     end
   end
 end
-
