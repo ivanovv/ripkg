@@ -42,7 +42,7 @@ task :parse_data do
   if File.exist?(OPTIONS_FILE)
     ipkg_list_path = File.read(OPTIONS_FILE).chomp
   else
-    ipkg_list_path || = '/opt/lib/ipkg'
+    ipkg_list_path ||= '/opt/lib/ipkg'
   end
 
   puts "Parsing started"
