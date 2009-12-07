@@ -25,7 +25,8 @@ class MountedApp < Sinatra::Base
     else
       pkg = Package.get(params[:package_id].to_i)
       if pkg then
-        @ipkg_text = Ipkg.send(params[:action].to_s.downcase.to_sym, pkg.name)        
+        ipkg = Ipkg.new("myrouter.homelinux.net", 47258)
+        @ipkg_text = ipkg.send(params[:action].to_s.downcase.to_sym, pkg.name)        
       else
         @ipkg_text = "No package found!"
       end      
