@@ -11,6 +11,8 @@ ROUTER_LIST_DIR = 'lists'
 LOCAL_TMP_DIR = './tmp'
 STATUS_FILE = 'status'
 OPTIONS_FILE = 'ipkg_list_path'
+ROUTER_FTP_USER = 'heroku'
+ROUTER_FTP_PASS = 'garden'
 
 
 task :default => ["data:load", "data:parse"]
@@ -22,7 +24,7 @@ namespace :data do
     puts "Start data download"
     ftp = Net::FTP.new(ROUTER_NAME)
     ftp.passive = true
-    ftp.login
+    ftp.login(ROUTER_FTP_USER, ROUTER_FTP_PASS)
     ftp.chdir(ROUTER_DIR)
     ftp.gettextfile(STATUS_FILE, File.join(LOCAL_TMP_DIR, STATUS_FILE))
     ftp.chdir(ROUTER_LIST_DIR)
