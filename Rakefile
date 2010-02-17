@@ -8,9 +8,13 @@ require 'package_parser'
 ROUTER_NAME = 'myrouter.homelinux.net'
 ROUTER_DIR = '/ipkg'
 ROUTER_LIST_DIR = 'lists'
-LOCAL_TMP_DIR = './tmp'
 STATUS_FILE = 'status'
 OPTIONS_FILE = 'ipkg_list_path'
+ROUTER_FTP_USER = 'heroku'
+ROUTER_FTP_PASS = 'garden'
+
+LOCAL_TMP_DIR = './tmp'
+
 
 
 task :default => ["data:load", "data:parse"]
@@ -22,7 +26,7 @@ namespace :data do
     puts "Start data download"
     ftp = Net::FTP.new(ROUTER_NAME)
     ftp.passive = true
-    ftp.login
+    ftp.login(ROUTER_FTP_USER, ROUTER_FTP_PASS)
     ftp.chdir(ROUTER_DIR)
     ftp.gettextfile(STATUS_FILE, File.join(LOCAL_TMP_DIR, STATUS_FILE))
     ftp.chdir(ROUTER_LIST_DIR)
@@ -34,6 +38,7 @@ namespace :data do
       local_file = File.join(local_dir, ftp_file)
       File.delete(local_file) if File.exists?(local_file)
       ftp.gettextfile(ftp_file, local_file)
+      puts "Downloaded #{ftp_file} successfully."
     end
     puts "Data downloaded successfully"
   end
@@ -48,12 +53,14 @@ namespace :data do
     end
 
     puts "Parsing started"
+    pkg_count = 0
 
-    ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" ).parse do |package|
-      parsed_package = PackageParser::parse_package(package)
+    ListParser.new(File.join(ipkg_list_path, "lists"), "\n\n\n" ).parse do |package|
+      parsed_package = PackageParser.parse_package(package)
 
       if parsed_package[:package][:name].to_s != ""
-        
+        pkg_count += 1
+
         section = Section.first(parsed_package[:section])
         if !section then
           section = Section.new(parsed_package[:section])
@@ -72,11 +79,13 @@ namespace :data do
       end
     end
 
-
+    puts "Parsed #{pkg_count} packages."
+    pkg_count = 0
 
     ListParser.new(ipkg_list_path, "\n\n").parse do |package|
       parsed_package = PackageParser::parse_package(package)
       if parsed_package[:package][:name].to_s != ""
+        pkg_count += 1
         package = Package.first(:name => parsed_package[:package][:name])
         if package then
           package.installed_version = parsed_package[:package][:version]
@@ -85,6 +94,7 @@ namespace :data do
         end
       end
     end
+     puts "Parsed #{pkg_count} package statuses."
     puts "Parsing finished"
   end
 end
