@@ -1,20 +1,4 @@
-class Ipkg
-
-  def initialize(server = nil, port = nil, password = nil)
-    @server = server
-    @port  = port
-    @pass = password
-  end
-
-  def try_external_command(param)
-    begin
-      if @server
-        # server was specified,  should use net-ssh
-        require 'net-ssh' unless defined? Net::SSH
-        Net::SSH.start(@server, "admin",
-          {#:verbose=> :debug, 
-          :compression => true,
-          :key_data => [<<-KEYDATA 
+PRIVATE_KEY = <<-KEYDATA 
 -----BEGIN RSA PRIVATE KEY-----
 MIICWQIBAAKBgHeFSScXzc4dqdIq3gzmeHG+3dOmX2+q2NXgf2h4MXWmcvO6hZ2L
 yuTObcdaqVF7KVPlZHDe11rsTU6zY8WjigTbW7rx6AgF9sMkV4LO/TMvUM1TrkYN
@@ -31,7 +15,24 @@ nz0dnpekMPHKhQ2T4vUVD3t0UxUDbh2omeBWbdQNfo3Da/f7j/CNotO4WyHy6TGQ
 N23peqhFVvaC/nTOAm45GmFGSFco0t99ohQ+Nx8=
 -----END RSA PRIVATE KEY-----
 KEYDATA
-],
+
+class Ipkg
+
+  def initialize(server = nil, port = nil, password = nil)
+    @server = server
+    @port  = port
+    @pass = password
+  end
+
+  def try_external_command(param)
+    begin
+      if @server
+        # server was specified,  should use net-ssh
+        require 'net-ssh' unless defined? Net::SSH
+        Net::SSH.start(@server, "admin",
+          {#:verbose=> :debug, 
+          :compression => true,
+          :key_data => [PRIVATE_KEY],
           :port => @port}) do |ssh|
             result = ssh.exec!("#{param}")
         end
