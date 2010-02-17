@@ -1,4 +1,4 @@
-PRIVATE_KEY = <<-KEYDATA 
+PRIVATE_KEY = <<-KEYDATA
 -----BEGIN RSA PRIVATE KEY-----
 MIICWQIBAAKBgHeFSScXzc4dqdIq3gzmeHG+3dOmX2+q2NXgf2h4MXWmcvO6hZ2L
 yuTObcdaqVF7KVPlZHDe11rsTU6zY8WjigTbW7rx6AgF9sMkV4LO/TMvUM1TrkYN
@@ -28,9 +28,9 @@ class Ipkg
     begin
       if @server
         # server was specified,  should use net-ssh
-        require 'net-ssh' unless defined? Net::SSH
+        require 'net/ssh' unless defined? Net::SSH
         Net::SSH.start(@server, "admin",
-          {#:verbose=> :debug, 
+          {#:verbose=> :debug,
           :compression => true,
           :key_data => [PRIVATE_KEY],
           :port => @port}) do |ssh|
@@ -68,3 +68,4 @@ class Ipkg
   end
 
 end
+

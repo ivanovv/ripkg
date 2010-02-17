@@ -93,8 +93,8 @@ namespace :data do
           package.save
         end
       end
-      puts "Parsed #{pkg_count} package statuses."
     end
+     puts "Parsed #{pkg_count} package statuses."
     puts "Parsing finished"
   end
 end
