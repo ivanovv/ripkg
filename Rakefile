@@ -8,11 +8,13 @@ require 'package_parser'
 ROUTER_NAME = 'myrouter.homelinux.net'
 ROUTER_DIR = '/ipkg'
 ROUTER_LIST_DIR = 'lists'
-LOCAL_TMP_DIR = './tmp'
 STATUS_FILE = 'status'
 OPTIONS_FILE = 'ipkg_list_path'
 ROUTER_FTP_USER = 'heroku'
 ROUTER_FTP_PASS = 'garden'
+
+LOCAL_TMP_DIR = './tmp'
+
 
 
 task :default => ["data:load", "data:parse"]
@@ -36,7 +38,7 @@ namespace :data do
       local_file = File.join(local_dir, ftp_file)
       File.delete(local_file) if File.exists?(local_file)
       ftp.gettextfile(ftp_file, local_file)
-      puts "Downloaded @{ftp_file} successfully."
+      puts "Downloaded #{ftp_file} successfully."
     end
     puts "Data downloaded successfully"
   end
@@ -53,8 +55,8 @@ namespace :data do
     puts "Parsing started"
     pkg_count = 0
 
-    ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" ).parse do |package|
-      parsed_package = PackageParser::parse_package(package)
+    ListParser.new(File.join(ipkg_list_path, "lists"), "\n\n\n" ).parse do |package|
+      parsed_package = PackageParser.parse_package(package)
 
       if parsed_package[:package][:name].to_s != ""
         pkg_count += 1
