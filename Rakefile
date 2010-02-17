@@ -36,6 +36,7 @@ namespace :data do
       local_file = File.join(local_dir, ftp_file)
       File.delete(local_file) if File.exists?(local_file)
       ftp.gettextfile(ftp_file, local_file)
+      puts "Downloaded @{ftp_file} successfully."
     end
     puts "Data downloaded successfully"
   end
@@ -50,12 +51,14 @@ namespace :data do
     end
 
     puts "Parsing started"
+    pkg_count = 0
 
     ListParser.new( File.join(ipkg_list_path, "lists"), "\n\n\n" ).parse do |package|
       parsed_package = PackageParser::parse_package(package)
 
       if parsed_package[:package][:name].to_s != ""
-        
+        pkg_count += 1
+
         section = Section.first(parsed_package[:section])
         if !section then
           section = Section.new(parsed_package[:section])
@@ -74,11 +77,13 @@ namespace :data do
       end
     end
 
-
+    puts "Parsed #{pkg_count} packages."
+    pkg_count = 0
 
     ListParser.new(ipkg_list_path, "\n\n").parse do |package|
       parsed_package = PackageParser::parse_package(package)
       if parsed_package[:package][:name].to_s != ""
+        pkg_count += 1
         package = Package.first(:name => parsed_package[:package][:name])
         if package then
           package.installed_version = parsed_package[:package][:version]
@@ -86,6 +91,7 @@ namespace :data do
           package.save
         end
       end
+      puts "Parsed #{pkg_count} package statuses."
     end
     puts "Parsing finished"
   end
