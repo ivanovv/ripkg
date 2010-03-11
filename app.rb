@@ -27,15 +27,13 @@ class MountedApp < Sinatra::Base
     else
       pkg = Package.get(params[:package_id].to_i)
       if pkg then
-        ipkg = Ipkg.new("myrouter.homelinux.net", 47258)
-        @ipkg_text = ipkg.send(params[:action].to_s.downcase.to_sym, pkg.name)
+        Ipkg.new(params[:action].to_s.downcase, pkg.name, "myrouter.homelinux.net", 47258)
       else
         @ipkg_text = "No package found!"
+        haml :ipkg
       end
     end
-    haml :ipkg
   end
-
 
   get '/updated' do
     @packages = Package.all(:conditions =>['"installed_version" > \'\' and "installed_version" <> "version"'])
