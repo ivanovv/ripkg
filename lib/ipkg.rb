@@ -24,7 +24,7 @@ class Ipkg
     @pass = password
   end
 
-  def try_external_command(param)
+  def try_external_command(command)
     begin
       if @server
         # server was specified,  should use net-ssh
@@ -34,10 +34,10 @@ class Ipkg
                       :compression => true,
                       :key_data => [PRIVATE_KEY],
                       :port => @port}) do |ssh|
-            result = ssh.exec!("#{param}")
+            result = ssh.exec!("#{command}")
         end
       else
-        result = yield(param)
+        result =`#{command}`
       end
       result
     rescue Exception
@@ -46,25 +46,19 @@ class Ipkg
   end
 
   def remove(pkg_name)
-    try_external_command(pkg_name) do
-      `ipkg -force-defaults remove #{pkg_name} </dev/null`
-    end
+    try_external_command("ipkg -force-defaults remove #{pkg_name} </dev/null")
   end
 
   def install(pkg_name)
-    try_external_command(pkg_name) do
-      `ipkg -force-defaults install #{pkg_name} </dev/null`
-    end
+    try_external_command("ipkg -force-defaults install #{pkg_name} </dev/null")
   end
 
   def upgrade(pkg_name)
-    try_external_command(pkg_name) do
-      `ipkg -force-defaults upgrade #{pkg_name} </dev/null`
-    end
+    try_external_command("ipkg -force-defaults upgrade #{pkg_name} </dev/null")
   end
 
   def update
-    `ipkg update </dev/null`
+    try_external_command("ipkg update </dev/null")
   end
 
 end
