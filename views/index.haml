@@ -21,9 +21,9 @@
       %li
         %a{ :href => "/packages" } Packages
       %li
-        %a{ :href => "/updated" } Updated Packages
+        %a{ :href => "/updated" }&= "Updated Packages (#{updated_packages.size})"
       %li
-        %a{ :href => "/installed" } Installed Packages
+        %a{ :href => "/installed" }&= "Installed Packages (#{installed_packages.size})"
 
     %form.dialog#searchForm{ :action => "search", :method => "POST" }
       %fieldset
@@ -33,3 +33,4 @@
 
         %label Package:
         %input#package_name{ :type => "text", :name => "package_name", :style => "padding: 6px 6px 6px 64px;"}
+

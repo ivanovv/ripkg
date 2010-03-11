@@ -30,10 +30,10 @@ class Ipkg
         # server was specified,  should use net-ssh
         require 'net/ssh' unless defined? Net::SSH
         Net::SSH.start(@server, "admin",
-          {#:verbose=> :debug,
-          :compression => true,
-          :key_data => [PRIVATE_KEY],
-          :port => @port}) do |ssh|
+                      {#:verbose=> :debug,
+                      :compression => true,
+                      :key_data => [PRIVATE_KEY],
+                      :port => @port}) do |ssh|
             result = ssh.exec!("#{param}")
         end
       else
