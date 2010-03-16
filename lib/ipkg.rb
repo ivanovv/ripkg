@@ -18,53 +18,60 @@ KEYDATA
 
 class Ipkg
 
-  def initialize(server = nil, port = nil, password = nil)
+  def initialize(command, pkg_name, server = nil, port = nil, password = nil)
+    @command = "ipkg -force-defaults #{command} #{pkg_name} </dev/null"
+    @pkg_name = pkg_name
     @server = server
     @port  = port
     @pass = password
   end
 
-  def try_external_command(param)
+  def each
+    if @server
+      # server was specified,  should use net-ssh
+      require 'net/ssh' unless defined? Net::SSH
+      Net::SSH.start(@server, "admin",
+                    {#:verbose=> :debug,
+                    :compression => true,
+                    :key_data => [PRIVATE_KEY],
+                    :port => @port}) do |ssh|
+        ssh.exec!("#{@command}") do |channel, stream, data|
+          #yield stdout << data if stream == :stdout
+          yield data.gsub(/(\r)?\n/, "<br />")
+        end
+      end
+    else
+      result = `#{@command}`
+      yield result
+    end
+  end
+
+  def update
+    try_external_command("ipkg update </dev/null")
+  end
+
+    def try_external_command(command)
     begin
       if @server
         # server was specified,  should use net-ssh
         require 'net/ssh' unless defined? Net::SSH
         Net::SSH.start(@server, "admin",
-          {#:verbose=> :debug,
-          :compression => true,
-          :key_data => [PRIVATE_KEY],
-          :port => @port}) do |ssh|
-            result = ssh.exec!("#{param}")
+                      {#:verbose=> :debug,
+                      :compression => true,
+                      :key_data => [PRIVATE_KEY],
+                      :port => @port}) do |ssh|
+            ssh.exec!("#{command}") do |channel, stream, data|
+              #yield stdout << data if stream == :stdout
+              yield data
+          end
         end
       else
-        result = yield(param)
+        result =`#{command}`
       end
       result
     rescue Exception
       $!.inspect
     end
-  end
-
-  def remove(pkg_name)
-    try_external_command(pkg_name) do
-      `ipkg -force-defaults remove #{pkg_name} </dev/null`
-    end
-  end
-
-  def install(pkg_name)
-    try_external_command(pkg_name) do
-      `ipkg -force-defaults install #{pkg_name} </dev/null`
-    end
-  end
-
-  def upgrade(pkg_name)
-    try_external_command(pkg_name) do
-      `ipkg -force-defaults upgrade #{pkg_name} </dev/null`
-    end
-  end
-
-  def update
-    `ipkg update </dev/null`
   end
 
 end

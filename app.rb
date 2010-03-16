@@ -10,6 +10,8 @@ class MountedApp < Sinatra::Base
 
   ['/', '/index'].each do |path|
     get path do
+      @installed_packages = Package.all(:installed_version.gt => "")
+      @updated_packages = Package.all(:conditions =>['"installed_version" > \'\' and "installed_version" <> "version"'])
       haml :index
     end
   end
@@ -20,20 +22,18 @@ class MountedApp < Sinatra::Base
   end
 
   post "/system/:package_id" do
-    if params[:action].to_s.downcase == "update" then 
+    if params[:action].to_s.downcase == "update" then
       @ipkg_text = Ipkg.update
     else
       pkg = Package.get(params[:package_id].to_i)
       if pkg then
-        ipkg = Ipkg.new("myrouter.homelinux.net", 47258)
-        @ipkg_text = ipkg.send(params[:action].to_s.downcase.to_sym, pkg.name)        
+        Ipkg.new(params[:action].to_s.downcase, pkg.name, "myrouter.homelinux.net", 47258)
       else
         @ipkg_text = "No package found!"
-      end      
+        haml :ipkg
+      end
     end
-    haml :ipkg
   end
-
 
   get '/updated' do
     @packages = Package.all(:conditions =>['"installed_version" > \'\' and "installed_version" <> "version"'])
@@ -44,17 +44,18 @@ class MountedApp < Sinatra::Base
     @packages = Package.all(:installed_version.gt => "")
     haml "packages/index".to_sym
   end
-  
+
   mount(Section) do
     mounted_template_engine :haml
     finder { |model, params| model.all }
     record { |model, params| model.first(:id => params[:id].to_i) }
-    
+
     # Mount children as a nested resource
     mount(Package) do
-      mounted_template_engine :haml      
+      mounted_template_engine :haml
       finder { |model, params| model.all }
       record { |model, params| model.first(:id => params[:id].to_i) }
     end
   end
 end
+
