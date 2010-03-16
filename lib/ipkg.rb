@@ -37,7 +37,7 @@ class Ipkg
                     :port => @port}) do |ssh|
         ssh.exec!("#{@command}") do |channel, stream, data|
           #yield stdout << data if stream == :stdout
-          yield data.tr("\r\n", "<br> ")
+          yield data.gsub(/(\r)?\n/, "<br />")
         end
       end
     else
